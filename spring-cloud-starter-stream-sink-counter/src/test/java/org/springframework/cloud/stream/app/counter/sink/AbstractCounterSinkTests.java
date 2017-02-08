@@ -25,8 +25,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.actuate.metrics.repository.MetricRepository;
 import org.springframework.boot.actuate.metrics.repository.redis.RedisMetricRepository;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.app.test.redis.RedisTestSupport;
 import org.springframework.cloud.stream.messaging.Sink;
@@ -42,8 +41,7 @@ import static org.junit.Assert.assertThat;
  * @author Gary Russell
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = AbstractCounterSinkTests.CounterSinkApplication.class)
-@IntegrationTest({ "server.port:0", "spring.metrics.export.delayMillis:10" })
+@SpringBootTest({ "server.port:0", "spring.metrics.export.delayMillis:10", "classes:AbstractCounterSinkTests.CounterSinkApplication.class" })
 @DirtiesContext
 public abstract class AbstractCounterSinkTests {
 

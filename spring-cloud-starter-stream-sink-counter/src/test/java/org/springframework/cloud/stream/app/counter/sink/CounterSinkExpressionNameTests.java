@@ -15,16 +15,16 @@
  */
 package org.springframework.cloud.stream.app.counter.sink;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import org.junit.Test;
 
-import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 
-@WebIntegrationTest({ "counter.nameExpression:payload" })
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+@SpringBootTest({ "counter.nameExpression:payload" })
 public class CounterSinkExpressionNameTests extends AbstractCounterSinkTests {
 
 	@Test
