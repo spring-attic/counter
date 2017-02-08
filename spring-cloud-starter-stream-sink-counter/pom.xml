@@ -13,9 +13,8 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-stream-test-support-internal</artifactId>
-			<version>1.0.2.RELEASE</version>
+			<groupId>org.springframework.cloud.stream.app</groupId>
+			<artifactId>app-starters-test-support</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
