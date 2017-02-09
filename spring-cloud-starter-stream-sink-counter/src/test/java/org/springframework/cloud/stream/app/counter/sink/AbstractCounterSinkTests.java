@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2015-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.springframework.cloud.stream.app.counter.sink;
+
+import static org.hamcrest.Matchers.instanceOf;
+import static org.junit.Assert.assertThat;
 
 import org.junit.After;
 import org.junit.Before;
@@ -26,22 +30,21 @@ import org.springframework.boot.actuate.metrics.repository.MetricRepository;
 import org.springframework.boot.actuate.metrics.repository.redis.RedisMetricRepository;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.app.test.redis.RedisTestSupport;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import static org.hamcrest.Matchers.instanceOf;
-import static org.junit.Assert.assertThat;
+import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * @author Mark Pollack
  * @author Marius Bogoevici
  * @author Gary Russell
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest({ "server.port:0", "spring.metrics.export.delayMillis:10", "classes:AbstractCounterSinkTests.CounterSinkApplication.class" })
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+		properties = {
+				"spring.metrics.export.delayMillis:10",
+				"classes:AbstractCounterSinkTests.CounterSinkApplication.class" })
 @DirtiesContext
 public abstract class AbstractCounterSinkTests {
 
@@ -51,7 +54,6 @@ public abstract class AbstractCounterSinkTests {
 	protected int sleepTime = 100;
 
 	@Autowired
-	@Bindings(CounterSinkConfiguration.class)
 	protected Sink sink;
 
 	@Autowired
