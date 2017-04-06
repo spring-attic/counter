@@ -39,26 +39,25 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @author Mark Pollack
  * @author Marius Bogoevici
  * @author Gary Russell
+ * @author Artem Bilan
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
 		properties = {
 				"spring.metrics.export.delayMillis:10",
-				"classes:AbstractCounterSinkTests.CounterSinkApplication.class" })
+				"spring.metrics.export.includes:"})
 @DirtiesContext
 public abstract class AbstractCounterSinkTests {
 
 	@Rule
 	public RedisTestSupport redisAvailableRule = new RedisTestSupport();
 
-	protected int sleepTime = 100;
-
 	@Autowired
 	protected Sink sink;
 
 	@Autowired
 	@Qualifier("metricRepository")
-	protected MetricRepository redisMetricRepository;
+	private MetricRepository redisMetricRepository;
 
 	@Before
 	public void init() {
@@ -69,6 +68,10 @@ public abstract class AbstractCounterSinkTests {
 	@After
 	public void clear() {
 		this.redisMetricRepository.reset("counter.simpleCounter");
+	}
+
+	protected MetricRepository getRedisMetricRepository() {
+		return this.redisMetricRepository;
 	}
 
 	@SpringBootApplication
