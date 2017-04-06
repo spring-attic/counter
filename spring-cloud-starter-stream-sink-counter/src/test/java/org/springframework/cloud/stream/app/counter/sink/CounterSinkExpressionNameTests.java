@@ -16,15 +16,25 @@
 
 package org.springframework.cloud.stream.app.counter.sink;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.springframework.integration.test.matcher.EqualsResultMatcher.equalsResult;
+import static org.springframework.integration.test.matcher.EventuallyMatcher.eventually;
 
 import org.junit.Test;
 
+import org.springframework.boot.actuate.metrics.Metric;
+import org.springframework.integration.test.matcher.EqualsResultMatcher;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.context.TestPropertySource;
 
+/**
+ * @author Mark Pollack
+ * @author Marius Bogoevici
+ * @author Gary Russell
+ * @author Artem Bilan
+ */
 @TestPropertySource(properties = "counter.nameExpression:payload")
 public class CounterSinkExpressionNameTests extends AbstractCounterSinkTests {
 
@@ -33,11 +43,19 @@ public class CounterSinkExpressionNameTests extends AbstractCounterSinkTests {
 		assertNotNull(this.sink.input());
 		Message<String> message = MessageBuilder.withPayload("simpleCounter").build();
 		sink.input().send(message);
-		Thread.sleep(sleepTime);
+
 		// Note: If the name of the counter does not start with 'counter' or 'metric' the
 		// 'counter.' prefix is added
-		// by the DefaultCounterService
-		assertEquals(1, this.redisMetricRepository.findOne("counter.simpleCounter").getValue().longValue());
+		// by the DefaultCounterService and BufferCounterService
+		assertThat(1L, eventually(equalsResult(new EqualsResultMatcher.Evaluator<Long>() {
+
+			@Override
+			public Long evaluate() {
+				Metric<?> metric = getRedisMetricRepository().findOne("counter.simpleCounter");
+				return metric != null ? metric.getValue().longValue() : null;
+			}
+
+		})));
 	}
 
 }
