@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.expression.Expression;
 import org.springframework.expression.common.LiteralExpression;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.AssertTrue;
 
@@ -30,6 +31,7 @@ import javax.validation.constraints.AssertTrue;
  * @author Gary Russell
  */
 @ConfigurationProperties("counter")
+@Validated
 public class CounterProperties {
 
 	/**
