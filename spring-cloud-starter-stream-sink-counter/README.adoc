@@ -4,6 +4,20 @@
 The counter sink simply counts the number of messages it receives,
 optionally storing counts in a separate store such as redis.
 
+== Input
+
+=== Headers
+
+N/A
+
+=== Payload
+
+N/A
+
+== Output
+
+N/A
+
 == Options
 
 The **$$counter$$** $$sink$$ has the following options:
@@ -25,5 +39,20 @@ $$spring.redis.url$$:: $$Redis url, which will overrule host, port and password 
 == Build
 
 ```
-$ mvn clean package
+$ ./mvnw clean install -PgenerateApps
+$ cd apps
+```
+
+You can find the corresponding binder based projects here. You can then cd into one one of the folders and build it:
+
+```
+$ ./mvnw clean package
+```
+
+== Examples
+
+```
+java -jar counter-sink.jar --name=<name of the counter>
+
+java -jar counter-sink.jar --nameExpression=<name expression>
 ```
