@@ -12,7 +12,7 @@ N/A
 
 === Payload
 
-N/A
+* Any
 
 == Output
 
