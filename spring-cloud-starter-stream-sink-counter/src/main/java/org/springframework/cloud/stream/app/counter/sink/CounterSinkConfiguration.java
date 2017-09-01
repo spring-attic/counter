@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2015-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ import org.springframework.messaging.Message;
  * @author Eric Bottard
  * @author Mark Pollack
  * @author Marius Bogoevici
+ * @author Artem Bilan
  */
 @EnableBinding(Sink.class)
 @EnableConfigurationProperties(CounterProperties.class)
@@ -57,17 +58,22 @@ public class CounterSinkConfiguration {
 	@ServiceActivator(inputChannel=Sink.INPUT)
 	public void count(Message<?> message) {
 		String name = computeMetricName(message);
-		logger.debug(String.format("Received: %s, about to increment counter named '%s'", message, name));
-		counterService.increment(name);
+		if (logger.isDebugEnabled()) {
+			logger.debug(String.format("Received: %s, about to increment counter named '%s'", message, name));
+		}
+		if (!name.startsWith("counter.")) {
+			name = "counter." + name;
+		}
+		this.counterService.increment(name);
 	}
 
 	protected String computeMetricName(Message<?> message) {
-		if (counterSinkProperties.getName() != null) {
-			return counterSinkProperties.getName();
+		if (this.counterSinkProperties.getName() != null) {
+			return this.counterSinkProperties.getName();
 		}
 		else {
-			return counterSinkProperties.getNameExpression().getValue(evaluationContext,
-					message, CharSequence.class).toString();
+			return this.counterSinkProperties.getNameExpression()
+					.getValue(this.evaluationContext, message, CharSequence.class).toString();
 		}
 	}
 
