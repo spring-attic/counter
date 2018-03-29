@@ -16,10 +16,8 @@
 
 package org.springframework.cloud.stream.app.counter.sink;
 
+import org.springframework.analytics.metrics.redis.RedisMetricRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.autoconfigure.ExportMetricWriter;
-import org.springframework.boot.actuate.metrics.repository.MetricRepository;
-import org.springframework.boot.actuate.metrics.repository.redis.RedisMetricRepository;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,8 +41,7 @@ public class CounterSinkStoreConfiguration {
 	private CounterProperties metricProperties;
 
 	@Bean
-	@ExportMetricWriter
-	public MetricRepository metricRepository() {
+	public RedisMetricRepository metricRepository() {
 		return new RedisMetricRepository(redisConnectionFactory);
 	}
 

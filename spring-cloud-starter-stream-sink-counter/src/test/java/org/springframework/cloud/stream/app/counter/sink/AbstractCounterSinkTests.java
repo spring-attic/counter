@@ -16,24 +16,22 @@
 
 package org.springframework.cloud.stream.app.counter.sink;
 
-import static org.hamcrest.Matchers.instanceOf;
-import static org.junit.Assert.assertThat;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
-
+import org.springframework.analytics.metrics.redis.RedisMetricRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.actuate.metrics.repository.MetricRepository;
-import org.springframework.boot.actuate.metrics.repository.redis.RedisMetricRepository;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.stream.app.test.redis.RedisTestSupport;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.hamcrest.Matchers.instanceOf;
+import static org.junit.Assert.assertThat;
 
 /**
  * @author Mark Pollack
@@ -57,7 +55,7 @@ public abstract class AbstractCounterSinkTests {
 
 	@Autowired
 	@Qualifier("metricRepository")
-	private MetricRepository redisMetricRepository;
+	private RedisMetricRepository redisMetricRepository;
 
 	@Before
 	public void init() {
@@ -70,7 +68,7 @@ public abstract class AbstractCounterSinkTests {
 		this.redisMetricRepository.reset("counter.simpleCounter");
 	}
 
-	protected MetricRepository getRedisMetricRepository() {
+	protected RedisMetricRepository getRedisMetricRepository() {
 		return this.redisMetricRepository;
 	}
 

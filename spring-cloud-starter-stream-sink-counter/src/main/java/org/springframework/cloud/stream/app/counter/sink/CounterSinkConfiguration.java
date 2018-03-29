@@ -18,9 +18,9 @@ package org.springframework.cloud.stream.app.counter.sink;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.springframework.analytics.metrics.redis.RedisMetricRepository;
+import org.springframework.analytics.rest.domain.Delta;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.metrics.CounterService;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Sink;
@@ -47,7 +47,7 @@ public class CounterSinkConfiguration {
 	private static final Log logger = LogFactory.getLog(CounterSinkConfiguration.class);
 
 	@Autowired
-	private CounterService counterService;
+	private RedisMetricRepository counterService;
 
 	@Autowired
 	private CounterProperties counterSinkProperties;
@@ -64,7 +64,7 @@ public class CounterSinkConfiguration {
 		if (!name.startsWith("counter.")) {
 			name = "counter." + name;
 		}
-		this.counterService.increment(name);
+		this.counterService.increment(new Delta<>(name, 1));
 	}
 
 	protected String computeMetricName(Message<?> message) {
