@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2017 the original author or authors.
+ * Copyright 2015-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,13 @@
 
 package org.springframework.cloud.stream.app.counter.sink;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.analytics.metrics.redis.RedisMetricRepository;
 import org.springframework.analytics.rest.domain.Delta;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableBinding;
@@ -28,6 +31,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.integration.annotation.ServiceActivator;
+import org.springframework.integration.expression.ExpressionUtils;
 import org.springframework.messaging.Message;
 
 /**
@@ -53,7 +57,14 @@ public class CounterSinkConfiguration {
 	private CounterProperties counterSinkProperties;
 
 	@Autowired
+	private BeanFactory beanFactory;
+
 	private EvaluationContext evaluationContext;
+
+	@PostConstruct
+	public void init() {
+		this.evaluationContext = ExpressionUtils.createStandardEvaluationContext(this.beanFactory);
+	}
 
 	@ServiceActivator(inputChannel=Sink.INPUT)
 	public void count(Message<?> message) {
