@@ -5,7 +5,7 @@
 
 	<groupId>org.springframework.cloud.stream.app</groupId>
 	<artifactId>counter-app-dependencies</artifactId>
-	<version>2.1.0.RC1</version>
+	<version>2.1.0.BUILD-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>counter-app-dependencies</name>
 	<description>Spring Cloud Stream Counter App Dependencies</description>
@@ -26,7 +26,7 @@
 			<dependency>
 				<groupId>org.springframework.cloud.stream.app</groupId>
 				<artifactId>spring-cloud-starter-stream-sink-counter</artifactId>
-				<version>2.1.0.RC1</version>
+				<version>2.1.0.BUILD-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.analytics</groupId>
